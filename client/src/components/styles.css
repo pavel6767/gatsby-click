@@ -13,3 +13,14 @@
 .navButtons > a:hover {
   opacity: 0.5;
 }
+
+.productsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 120px));
+  grid-gap: 40px;
+  justify-content: center;
+}
+
+.productsItem > img {
+  margin-bottom: 0;
+}
