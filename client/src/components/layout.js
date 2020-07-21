@@ -23,7 +23,7 @@ export default class Layout extends React.Component {
 
   async componentDidMount() {
     try {
-      let res = await fetch('/api/inventory')
+      let res = await fetch('http://localhost:3001/api/inventory')
       console.log(res)
       let data = await res.json()
       console.log(data)
