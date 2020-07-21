@@ -19,10 +19,20 @@ export default class Layout extends React.Component {
       totalPrice: 0,
       cart: []
     }
+    this.addToCart = this.addToCart.bind(this)
+  }
+
+  addToCart(e) {
+    if (e.target.className === 'btn') {
+      console.log(e.target.parentNode.id)
+    }
+
+
   }
 
   render() {
-
+    const { addToCart } = this
+    const { children } = this.props
     return (
       <>
         <Header />
@@ -33,7 +43,7 @@ export default class Layout extends React.Component {
             padding: `0 1.0875rem 1.45rem`,
           }}
         >
-          <main>{this.props.children}</main>
+          <main onClick={addToCart}>{children}</main>
           {/* <footer>
           Built by
           {` `}

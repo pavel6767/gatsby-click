@@ -15,11 +15,11 @@ export default class HomePage extends React.Component {
     let data = {}
     try {
       let res = await fetch('http://localhost:3001/api/inventory')
-      console.log(res)
+      // console.log(res)
       if (res.status === 200) {
         data = await res.json()
       }
-      console.log(data)
+      // console.log(data)
     } catch (error) {
       console.log(error)
     }
@@ -30,15 +30,14 @@ export default class HomePage extends React.Component {
     const { products } = this.state
 
     return Object.keys(products).map(k => (
-      <div key={k} className="productsItem">
-        <img src={products[k].url} />
+      <div key={k} id={k} className="productsItem">
+        <img src={products[k].url} alt="sticker" />
         <div>${products[k].price / 100}</div>
-        <button>{''} to cart</button>
+        <button className="btn" onClick={this.props.addToCart}>{''} to cart</button>
       </div>))
   }
 
   render() {
-    console.log(this.state)
     return (
       <Layout>
         <SEO title="Home" />
