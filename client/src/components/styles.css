@@ -1,0 +1,15 @@
+.navButtons {
+  margin: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.navButtons > a {
+  color: white;
+  text-decoration: none;
+  margin: 0 0.2em;
+}
+
+.navButtons > a:hover {
+  opacity: 0.5;
+}

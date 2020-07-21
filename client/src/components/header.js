@@ -2,7 +2,22 @@ import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
 
-const Header = ({ siteTitle }) => (
+const links = [
+  {
+    title: "Home",
+    slug: "/"
+  },
+  {
+    title: "Cart",
+    slug: "/cart"
+  },
+  {
+    title: "Checkout",
+    slug: "/checkout"
+  },
+]
+
+const Header = () => (
   <header
     style={{
       background: `rebeccapurple`,
@@ -16,17 +31,14 @@ const Header = ({ siteTitle }) => (
         padding: `1.45rem 1.0875rem`,
       }}
     >
-      <h1 style={{ margin: 0 }}>
-        <Link
-          to="/"
-          style={{
-            color: `white`,
-            textDecoration: `none`,
-          }}
-        >
-          {siteTitle}
-        </Link>
-      </h1>
+      <ul className="navButtons">
+        {links.map(link => (
+          <Link
+            key={link.slug}
+            to={link.slug}>
+            {link.title}
+          </Link>))}
+      </ul>
     </div>
   </header>
 )
