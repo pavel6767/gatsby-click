@@ -28,6 +28,11 @@ router.post('/checkout', async (req, res, next) => {
       mastercard: new RegExp("^5[1-5][0-9]{14}$")
     }
 
+    if (!cards.hasOwnProperty[paymentInfo.type]) {
+      message = 'invalid card type'
+      throw new Error(message)
+    }
+
     if (!cards[paymentInfo.type].test(String(paymentInfo.number))) {
       message = `invalid ${paymentInfo.type} card`
       throw new Error(message)
