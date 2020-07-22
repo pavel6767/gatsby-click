@@ -17,21 +17,35 @@ export default class Layout extends React.Component {
     super()
     this.state = {
       totalPrice: 0,
-      cart: []
+      cart: {}
     }
     this.addToCart = this.addToCart.bind(this)
   }
 
   addToCart(e) {
     if (e.target.className === 'btn') {
-      console.log(e.target.parentNode.id)
+      // ref localstorage
+      /*
+        if in local storage remove
+      */
+      const { cart } = this.state
+      const { id } = e.target.parentNode
+      const { sessionStorage } = window
+
+      const inCart = sessionStorage.getItem(id)
+
+      if (inCart) {
+        sessionStorage.removeItem(id)
+        delete cart[id]
+        this.setState({ ...this.state, cart })
+      } else {
+        sessionStorage.setItem(id, { price: 127, url: 'hi', quantity: 5 })
+        this.setState({ ...this.state, cart: { ...cart, id: { price: 127, url: 'hi', quantity: 5 } } })
+      }
     }
-
-
   }
 
   render() {
-    const { addToCart } = this
     const { children } = this.props
     return (
       <>
@@ -43,7 +57,7 @@ export default class Layout extends React.Component {
             padding: `0 1.0875rem 1.45rem`,
           }}
         >
-          <main onClick={addToCart}>{children}</main>
+          <main onClick={this.addToCart}>{children}</main>
           {/* <footer>
           Built by
           {` `}

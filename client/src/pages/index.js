@@ -12,29 +12,37 @@ export default class HomePage extends React.Component {
   }
 
   async componentDidMount() {
-    let data = {}
+    let products = {}
     try {
       let res = await fetch('http://localhost:3001/api/inventory')
-      // console.log(res)
       if (res.status === 200) {
-        data = await res.json()
+        products = await res.json()
       }
-      // console.log(data)
     } catch (error) {
       console.log(error)
     }
-    this.setState({ products: data })
+    this.setState({ products })
   }
 
   productMap() {
     const { products } = this.state
+    /*
+      button ref localstore
 
-    return Object.keys(products).map(k => (
-      <div key={k} id={k} className="productsItem">
-        <img src={products[k].url} alt="sticker" />
-        <div>${products[k].price / 100}</div>
-        <button className="btn" onClick={this.props.addToCart}>{''} to cart</button>
-      </div>))
+      div for qty ref localstore
+    */
+    const { sessionStorage } = window
+    return Object.keys(products).map(k => {
+      const inCart = sessionStorage.getItem(k)
+
+      return (
+        <div key={k} id={k} className="productsItem">
+          <img src={products[k].url} alt="sticker" />
+          <div>${products[k].price / 100}</div>
+          {inCart && <div>{inCart.quantity}</div>}
+          <button className="btn" onClick={() => this.forceUpdate()}>{inCart ? "Remove from " : "Add to "} cart</button>
+        </div>)
+    })
   }
 
   render() {
