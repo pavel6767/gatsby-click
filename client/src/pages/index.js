@@ -26,20 +26,19 @@ export default class HomePage extends React.Component {
 
   productMap() {
     const { products } = this.state
-    /*
-      button ref localstore
-
-      div for qty ref localstore
-    */
     const { sessionStorage } = window
-    return Object.keys(products).map(k => {
-      const inCart = sessionStorage.getItem(k)
 
+    return Object.keys(products).map(key => {
+      const inCart = JSON.parse(sessionStorage.getItem(key))
       return (
-        <div key={k} id={k} className="productsItem">
-          <img src={products[k].url} alt="sticker" />
-          <div>${products[k].price / 100}</div>
-          {inCart && <div>{inCart.quantity}</div>}
+        <div key={key} id={key} className="productsItem">
+          <img src={products[key].url} alt="sticker" />
+          <div>${products[key].price / 100}</div>
+          {inCart && <div>
+            <button onClick={() => this.forceUpdate()} className="btn-qty">-</button>
+            {inCart.quantity}
+            <button onClick={() => this.forceUpdate()} className="btn-qty">+</button>
+          </div>}
           <button className="btn" onClick={() => this.forceUpdate()}>{inCart ? "Remove from " : "Add to "} cart</button>
         </div>)
     })

@@ -15,34 +15,57 @@ import "./styles.css"
 export default class Layout extends React.Component {
   constructor(props) {
     super()
-    this.state = {
-      totalPrice: 0,
-      cart: {}
-    }
-    this.addToCart = this.addToCart.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
-  addToCart(e) {
+  handleClick(e) {
+    if (!['btn', 'btn-qty'].includes(e.target.className)) return
+
+    const { sessionStorage } = window
+    let totalPrice = Number(sessionStorage.getItem('totalPrice'))
+    if (!totalPrice) totalPrice = 0
+
+    let id
+    let item
+
     if (e.target.className === 'btn') {
-      // ref localstorage
-      /*
-        if in local storage remove
-      */
-      const { cart } = this.state
-      const { id } = e.target.parentNode
-      const { sessionStorage } = window
+      ({ id } = e.target.parentNode)
+      item = JSON.parse(sessionStorage.getItem(id))
 
-      const inCart = sessionStorage.getItem(id)
-
-      if (inCart) {
+      if (item) {
+        totalPrice -= item.price * item.quantity
         sessionStorage.removeItem(id)
-        delete cart[id]
-        this.setState({ ...this.state, cart })
       } else {
-        sessionStorage.setItem(id, { price: 127, url: 'hi', quantity: 5 })
-        this.setState({ ...this.state, cart: { ...cart, id: { price: 127, url: 'hi', quantity: 5 } } })
+        let newItem = {
+          price: 100 * Number(e.target.parentNode.children[1].textContent.slice(1)),
+          url: e.target.parentNode.children[0].src,
+          quantity: 1
+        }
+
+        totalPrice += newItem.price
+
+        sessionStorage.setItem(id, JSON.stringify(newItem))
+      }
+      console.log('total price ', totalPrice)
+    } else if (e.target.className === 'btn-qty') {
+      ({ id } = e.target.parentNode.parentNode)
+      item = JSON.parse(sessionStorage.getItem(id))
+
+      if (e.target.textContent === "+") {
+        item.quantity++
+        totalPrice += item.price
+      } else if (e.target.textContent === "-") {
+        totalPrice -= item.price
+        item.quantity--
+      }
+
+      if (item.quantity === 0) {
+        sessionStorage.removeItem(id)
+      } else {
+        sessionStorage.setItem(id, JSON.stringify(item))
       }
     }
+    sessionStorage.setItem('totalPrice', totalPrice)
   }
 
   render() {
@@ -57,7 +80,7 @@ export default class Layout extends React.Component {
             padding: `0 1.0875rem 1.45rem`,
           }}
         >
-          <main onClick={this.addToCart}>{children}</main>
+          <main onClick={this.handleClick}>{children}</main>
           {/* <footer>
           Built by
           {` `}

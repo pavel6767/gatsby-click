@@ -24,3 +24,8 @@
 .productsItem > img {
   margin-bottom: 0;
 }
+
+.btn-qty {
+  margin: 0.2em;
+  padding: 0px 7px;
+}
