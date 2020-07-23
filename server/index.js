@@ -15,7 +15,6 @@ app.use(express.static(path.join(__dirname, '..', 'client', 'public')))
 
 app.use((req, res, next) => {
   if (path.extname(req.path).length) {
-    console.log(path.extname(req.path))
     const err = new Error('Not found')
     err.status = 404
     next(err)
@@ -30,9 +29,10 @@ app.use('*', (req, res) => {
 
 // catch 404 and forward to error handler
 app.use((err, req, res, next) => {
-  console.error(err)
+  console.log('404\n\n')
+  console.error(JSON.stringify(err))
   console.error(err.stack)
-  res.status(err.status || 500).send(err.message || 'Internal server error.')
+  res.status(err.status || 500).send({ message: err.message } || 'Internal server error.')
 })
 
 app.listen(port, function () {

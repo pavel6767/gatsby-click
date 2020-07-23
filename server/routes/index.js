@@ -56,7 +56,8 @@ router.post('/checkout', async (req, res, next) => {
 
     res.send(response)
   } catch (err) {
-    res.send({ message: err.message })
+    err.status = 403
+    // res.status(403).send({ message: err.message })
     next(err);
   }
 })

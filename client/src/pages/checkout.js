@@ -25,7 +25,7 @@ export default class Checkout extends React.Component {
   async handleSubmit(e) {
     e.preventDefault()
 
-    let message, data, res
+    let message, data, res, valid = true
     const { userName, userEmail, cardType, cardNumber, cardCvv } = this.state
 
     let cart = this.getCart()
@@ -38,14 +38,14 @@ export default class Checkout extends React.Component {
         headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': "*" },
         body: JSON.stringify(body)
       })
-      if (res.status === 200) {
-        data = await res.json()
-        message = data.message
-      } else {
-        message = res.message
-      }
+
+      data = await res.json()
+      message = data.message
+
+      valid = res.status === 200
+
     } catch (error) {
-      message = error
+      console.log(error)
     }
 
 
@@ -53,7 +53,7 @@ export default class Checkout extends React.Component {
     this.clearCart(cart)
 
     // clear state if request was successful
-    let newState = res.status === 200 ? { ...this.initialState } : { ...this.state }
+    let newState = valid ? { ...this.initialState } : { ...this.state }
 
     this.setState({ ...newState, message }, (prevState) => {
       setTimeout(() => this.setState({ ...prevState, message: '' }), 2000)
