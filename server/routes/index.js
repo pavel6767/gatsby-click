@@ -11,12 +11,14 @@ router.get('/inventory', async (req, res, next) => {
   }
 })
 
+
 router.post('/checkout', async (req, res, next) => {
   try {
     const { userName, userEmail, cart, paymentInfo } = req.body
 
-    const response = { message: "" }
+    let response = {}
     let message = ''
+
     // check for valid email
     const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (!reg.test(String(userEmail).toLowerCase())) throw new Error('invalid email');
@@ -28,13 +30,13 @@ router.post('/checkout', async (req, res, next) => {
       mastercard: new RegExp("^5[1-5][0-9]{14}$")
     }
 
-    if (!cards.hasOwnProperty[paymentInfo.type]) {
+    if (!cards.hasOwnProperty([paymentInfo.cardType])) {
       message = 'invalid card type'
       throw new Error(message)
     }
 
-    if (!cards[paymentInfo.type].test(String(paymentInfo.number))) {
-      message = `invalid ${paymentInfo.type} card`
+    if (!cards[paymentInfo.cardType].test(String(paymentInfo.cardNumber))) {
+      message = `invalid ${paymentInfo.cardType} card`
       throw new Error(message)
     }
 
@@ -49,10 +51,12 @@ router.post('/checkout', async (req, res, next) => {
       totalPrice += inventory[product.id].price * product.quantity
     })
 
+    message = "Success! Thank you for your purchase";
+    response = { cart, userName, userEmail, paymentInfo, totalPrice, message };
 
-    response.payload = { cart, userName, userEmail, paymentInfo, totalPrice }
     res.send(response)
   } catch (err) {
+    res.send({ message: err.message })
     next(err);
   }
 })

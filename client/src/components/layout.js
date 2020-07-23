@@ -46,7 +46,6 @@ export default class Layout extends React.Component {
 
         sessionStorage.setItem(id, JSON.stringify(newItem))
       }
-      console.log('total price ', totalPrice)
     } else if (e.target.className === 'btn-qty') {
       ({ id } = e.target.parentNode.parentNode)
       item = JSON.parse(sessionStorage.getItem(id))

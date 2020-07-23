@@ -29,3 +29,7 @@
   margin: 0.2em;
   padding: 0px 7px;
 }
+
+.checkout-form > div {
+  margin: 0.75em auto;
+}
