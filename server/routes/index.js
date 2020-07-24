@@ -15,7 +15,7 @@ router.get('/inventory', async (req, res, next) => {
 router.post('/checkout', async (req, res, next) => {
   try {
     const { userName, userEmail, cart, paymentInfo } = req.body
-
+    console.log('body ', req.body)
     let response = {}
     let message = ''
 
@@ -37,6 +37,12 @@ router.post('/checkout', async (req, res, next) => {
 
     if (!cards[paymentInfo.cardType].test(String(paymentInfo.cardNumber))) {
       message = `invalid ${paymentInfo.cardType} card`
+      throw new Error(message)
+    }
+
+    const regCvv = new RegExp('^[0-9]+$');
+    if (!regCvv.test(paymentInfo.cardCvv)) {
+      message = `invalid cvv for card`
       throw new Error(message)
     }
 

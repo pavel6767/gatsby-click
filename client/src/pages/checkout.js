@@ -55,13 +55,12 @@ export default class Checkout extends React.Component {
 
     // clear cart and state if request was successful
     let newState
-    // if (valid) {
-    //   newState = { ...this.initialState }
-    //   context.clearCart()
-    // } else {
-    //   newState = { ...this.state }
-    // }
-    newState = { ...this.state }
+    if (valid) {
+      newState = { ...this.initialState }
+      context.clearCart()
+    } else {
+      newState = { ...this.state }
+    }
 
     this.setState({ ...newState, message }, (prevState) => {
       setTimeout(() => this.setState({ ...prevState, message: '' }), 2000)
