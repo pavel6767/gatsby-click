@@ -1,5 +1,6 @@
 import React from "react"
 
+import { myContext } from '../../Provider';
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
@@ -24,12 +25,12 @@ export default class HomePage extends React.Component {
     this.setState({ products })
   }
 
-  productMap() {
+  productMap({ cart, totalPrice }) {
     const { products } = this.state
-    const { sessionStorage } = window
 
     return Object.keys(products).map(key => {
-      const inCart = JSON.parse(sessionStorage.getItem(key))
+      const inCart = cart[key]
+
       return (
         <div key={key} id={key} className="productsItem">
           <img src={products[key].url} alt="sticker" />
@@ -47,11 +48,17 @@ export default class HomePage extends React.Component {
   render() {
     return (
       <Layout>
-        <SEO title="Home" />
-        <h1>Home</h1>
-        <div className="productsContainer">
-          {this.productMap()}
-        </div>
+        <myContext.Consumer>
+          {context => (
+            <>
+              <SEO title="Home" />
+              <h1>Home</h1>
+              <div className="productsContainer">
+                {this.productMap(context)}
+              </div>
+            </>
+          )}
+        </myContext.Consumer>
       </Layout>
     )
   }

@@ -53,7 +53,7 @@ router.post('/checkout', async (req, res, next) => {
 
     message = "Success! Thank you for your purchase";
     response = { cart, userName, userEmail, paymentInfo, totalPrice, message };
-
+    console.log('\n\n\nsuccess')
     res.send(response)
   } catch (err) {
     err.status = 403
